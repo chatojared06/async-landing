@@ -1,4 +1,5 @@
 const API = 'https://youtube-v31.p.rapidapi.com/search?channelId=UCOsVSkmXD1tc6uiJ2hc0wYQ&part=snippet%2Cid&order=date&maxResults=6';
+const url2 = "https://www.youtube.com/@EAStarWars";
 
 const content = null || document.getElementById('content');
 
@@ -16,14 +17,19 @@ async function fetchData(urlApi) {
     return data;
 }
 
+function redirectToVideo(url) {
+  window.location.href = url;
+}
+
 (async () => {
-    try{
-        const videos = await fetchData(API);
-        let view = `
-        ${videos.items.map(video => `
-        <div class="group relative">
+  try{
+      const videos = await fetchData(API);
+      let view = `
+      ${videos.items.map(video => `
+      <div class="group relative">
         <div
-          class="w-full bg-gray-200 aspect-w-1 aspect-h-1 rounded-md overflow-hidden group-hover:opacity-75 lg:aspect-none">
+          class="w-full bg-gray-200 aspect-w-1 aspect-h-1 rounded-md overflow-hidden group-hover:opacity-75 lg:aspect-none"
+          click="redirectToVideo('https://www.youtube.com/watch?v=${video.id.videoId}')">
           <img src="${video.snippet.thumbnails.high.url}" alt="${video.snippet.description}" class="w-full">
         </div>
         <div class="mt-4 flex justify-between">
@@ -33,11 +39,16 @@ async function fetchData(urlApi) {
           </h3>
         </div>
       </div>
-        `).slice(0,4).join('')}
-        `;
-        content.innerHTML = view;
-    }catch (error){
-        console.log(error);
-        alert(error);
-    }
+      `).slice(0,4).join('')}
+      `;
+      content.innerHTML = view;
+  } catch (error){
+      console.log(error);
+      alert(error);
+  }
 })();
+
+
+
+
+
